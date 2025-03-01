@@ -135,12 +135,14 @@ export const uploadRecipe = async function (newRecipe) {
     const recipe = {
       title: newRecipe.title,
       source_url: newRecipe.sourceUrl,
-      image_url: newRecipe.image,
+      image_url: newRecipe.image.startsWith("http://")
+        ? newRecipe.image.replace("http://", "https://")
+        : newRecipe.image,
       publisher: newRecipe.publisher,
       cooking_time: +newRecipe.cookingTime,
       servings: +newRecipe.servings,
       ingredients,
-    }
+    };
 
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
     state.recipe = createRecipeObject(data);
